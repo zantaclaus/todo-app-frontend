@@ -5,7 +5,6 @@ import { TodoType } from '@/types/todo';
 import axios from '@/utils/axios';
 
 import {
-  Box,
   Button,
   Card,
   Flex,
@@ -18,7 +17,7 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
-import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
+import { DeleteIcon } from '@chakra-ui/icons';
 
 export default function Home() {
   const { signOut } = useAuth();
@@ -36,7 +35,8 @@ export default function Home() {
     fetchTodo();
   }, []);
 
-  const handleAdd = async () => {
+  const handleAddTodo = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (!title) return;
 
     try {
@@ -47,8 +47,16 @@ export default function Home() {
     } catch (error) {
       console.log(error);
     }
+  };
 
-    // setTodos((prev) => [...prev, newTodo]);
+  const handleDeleteTodo = (id: string) => async () => {
+    try {
+      await axios.delete(`/api/todo/${id}`);
+
+      setTodos((prev) => prev.filter((todo) => todo._id !== id));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -65,18 +73,21 @@ export default function Home() {
             What's the Plan for Today?
           </Heading>
 
-          <InputGroup size="lg" width="24rem">
-            <Input
-              placeholder="Add a todo"
-              value={title}
-              onChange={(e) => setTitle(e.currentTarget.value)}
-            />
-            <InputRightElement width="4.5rem">
-              <Button h="1.75rem" size="sm" onClick={handleAdd}>
-                Add
-              </Button>
-            </InputRightElement>
-          </InputGroup>
+          <form onSubmit={handleAddTodo}>
+            <InputGroup size="lg" width="24rem">
+              <Input
+                _focus={{ borderColor: 'teal.400' }}
+                placeholder="Add a todo"
+                value={title}
+                onChange={(e) => setTitle(e.currentTarget.value)}
+              />
+              <InputRightElement width="4.5rem">
+                <Button h="1.75rem" size="sm" type="submit">
+                  Add
+                </Button>
+              </InputRightElement>
+            </InputGroup>
+          </form>
 
           <Stack spacing={2} height="96" overflow="auto">
             {todos.map((todo) => (
@@ -98,6 +109,7 @@ export default function Home() {
                       transition="all 0.2s ease-in-out"
                       _hover={{ bgColor: 'teal', color: 'white' }}
                       icon={<DeleteIcon />}
+                      onClick={handleDeleteTodo(todo._id)}
                     />
                   </HStack>
                 </Flex>

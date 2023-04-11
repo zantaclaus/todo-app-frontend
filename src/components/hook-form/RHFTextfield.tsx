@@ -29,6 +29,7 @@ export default function RHFTextfield({ label, name, ...other }: Props) {
                 ? ''
                 : field.value
             }
+            _focus={{ borderColor: 'teal.400' }}
             autoComplete="off"
           />
           <FormErrorMessage>{error && error.message}</FormErrorMessage>
