@@ -1,4 +1,6 @@
 import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 import { FormProvider, RHFTextfield } from '@/components/hook-form';
 
@@ -18,7 +20,16 @@ export default function SignupForm() {
     password: '',
   };
 
-  const methods = useForm({ defaultValues });
+  const signupSchema = yup.object().shape({
+    name: yup.string().min(3).required('Name is required'),
+    username: yup.string().min(3).required('Username is required'),
+    password: yup.string().min(6).required('Password is required'),
+  });
+
+  const methods = useForm({
+    defaultValues,
+    resolver: yupResolver(signupSchema),
+  });
 
   const {
     handleSubmit,

@@ -1,4 +1,6 @@
 import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 import { FormProvider, RHFTextfield } from '@/components/hook-form';
 
@@ -10,6 +12,7 @@ import {
   Heading,
   Stack,
 } from '@chakra-ui/react';
+import { useEffect } from 'react';
 
 export default function SigninForm() {
   const defaultValues = {
@@ -17,12 +20,24 @@ export default function SigninForm() {
     password: '',
   };
 
-  const methods = useForm({ defaultValues });
+  const signinSchema = yup.object().shape({
+    username: yup.string().min(3).required('Username is required'),
+    password: yup.string().min(6).required('Password is required'),
+  });
+
+  const methods = useForm({
+    defaultValues,
+    resolver: yupResolver(signinSchema),
+  });
 
   const {
     handleSubmit,
-    formState: { isSubmitting },
+    formState: { isSubmitting, errors },
   } = methods;
+
+  useEffect(() => {
+    console.log({ errors });
+  }, [errors]);
 
   const onSubmit = (data: typeof defaultValues) => {};
 

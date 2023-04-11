@@ -1,6 +1,7 @@
 import { useFormContext, Controller } from 'react-hook-form';
 
 import {
+  FormControl,
   FormErrorMessage,
   FormLabel,
   Input,
@@ -17,7 +18,7 @@ export default function RHFTextfield({ label, name, ...other }: Props) {
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => (
-        <>
+        <FormControl isInvalid={!!error}>
           <FormLabel htmlFor={name}>{label}</FormLabel>
           <Input
             {...field}
@@ -31,7 +32,7 @@ export default function RHFTextfield({ label, name, ...other }: Props) {
             autoComplete="off"
           />
           <FormErrorMessage>{error && error.message}</FormErrorMessage>
-        </>
+        </FormControl>
       )}
     />
   );
