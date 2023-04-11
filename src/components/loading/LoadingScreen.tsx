@@ -1,4 +1,4 @@
-import { Flex, Image, Spinner } from '@chakra-ui/react';
+import { Flex, Spinner } from '@chakra-ui/react';
 
 export default function LoadingScreen() {
   return (
