@@ -3,16 +3,19 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import {
+  Text,
   Button,
   Card,
   CardBody,
   CardHeader,
+  Flex,
   Heading,
   Stack,
 } from '@chakra-ui/react';
 
 import { useAuth } from '@/auth/useAuth';
 import { FormProvider, RHFTextfield } from '@/components/hook-form';
+import { Link } from 'react-router-dom';
 
 const defaultValues = {
   name: '',
@@ -46,7 +49,7 @@ export default function SignupForm() {
   };
 
   return (
-    <>
+    <Stack spacing={8}>
       <Card padding={6} width={'28rem'} rounded={'2xl'}>
         <CardHeader>
           <Heading as="h2" color="teal.500">
@@ -72,6 +75,17 @@ export default function SignupForm() {
           </FormProvider>
         </CardBody>
       </Card>
-    </>
+
+      <Flex justifyContent="center" gap="2">
+        <Text>Already has an account?</Text>
+        <Text
+          textDecor="underline"
+          textColor="teal"
+          _hover={{ textColor: 'teal.400' }}
+        >
+          <Link to="/signin">Sign in</Link>
+        </Text>
+      </Flex>
+    </Stack>
   );
 }
