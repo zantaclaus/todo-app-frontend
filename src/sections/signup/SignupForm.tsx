@@ -45,7 +45,7 @@ export default function SignupForm() {
   const onSubmit = async (data: typeof defaultValues) => {
     const { name, username, password } = data;
 
-    signUp(name, username, password);
+    await signUp(name, username, password);
   };
 
   return (

@@ -1,4 +1,5 @@
 import { PropsWithChildren, createContext, useEffect, useReducer } from 'react';
+import { AxiosError } from 'axios';
 
 import {
   AuthActionsType,
@@ -7,6 +8,8 @@ import {
   AuthContextType,
 } from './types';
 import axios from '@/utils/axios';
+
+import { useToast } from '@chakra-ui/react';
 
 const initialState: AuthStateType = {
   isInitialized: false,
@@ -49,6 +52,7 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 
 export default function AuthProvider({ children }: PropsWithChildren) {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const toast = useToast();
 
   const initialize = async () => {
     const accessToken = localStorage.getItem('accessToken');
@@ -110,6 +114,16 @@ export default function AuthProvider({ children }: PropsWithChildren) {
       });
     } catch (error) {
       console.log(error);
+
+      if (error instanceof AxiosError) {
+        toast({
+          title: 'Invalid username or password',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+          position: 'top-right',
+        });
+      }
     }
   };
 
@@ -133,6 +147,15 @@ export default function AuthProvider({ children }: PropsWithChildren) {
         },
       });
     } catch (error) {
+      if (error instanceof AxiosError) {
+        toast({
+          title: error.response?.data,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+          position: 'top-right',
+        });
+      }
       console.log(error);
     }
   };
