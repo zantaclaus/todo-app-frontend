@@ -10,6 +10,7 @@ import {
 import axios from '@/utils/axios';
 
 import { useToast } from '@chakra-ui/react';
+import { hashPassword } from '@/services/auth';
 
 const initialState: AuthStateType = {
   isInitialized: false,
@@ -129,10 +130,12 @@ export default function AuthProvider({ children }: PropsWithChildren) {
 
   const signUp = async (name: string, username: string, password: string) => {
     try {
+      const hashedPassword = await hashPassword(password);
+      console.log(hashPassword);
       const res = await axios.post('/api/auth/signup', {
         name,
         username,
-        password,
+        password: hashedPassword,
       });
 
       const { user, token } = res.data;

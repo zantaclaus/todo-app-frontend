@@ -24,8 +24,8 @@ const defaultValues = {
 };
 
 const signinSchema = yup.object().shape({
-  username: yup.string().min(3).required('Username is required'),
-  password: yup.string().min(6).required('Password is required'),
+  username: yup.string().min(3).max(30).required('Username is required'),
+  password: yup.string().min(6).max(64).required('Password is required'),
 });
 
 export default function SigninForm() {

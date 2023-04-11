@@ -24,9 +24,9 @@ const defaultValues = {
 };
 
 const signupSchema = yup.object().shape({
-  name: yup.string().min(3).required('Name is required'),
-  username: yup.string().min(3).required('Username is required'),
-  password: yup.string().min(6).required('Password is required'),
+  name: yup.string().min(3).max(30).required('Name is required'),
+  username: yup.string().min(3).max(30).required('Username is required'),
+  password: yup.string().min(6).max(64).required('Password is required'),
 });
 
 export default function SignupForm() {
