@@ -1,3 +1,5 @@
+import AuthGuard from '@/auth/AuthGuard';
+import GuestGuard from '@/auth/GuestGuard';
 import { lazy, Suspense } from 'react';
 import { Route, Routes as RRDRoutes } from 'react-router-dom';
 
@@ -9,9 +11,30 @@ export default function Routes() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <RRDRoutes>
-        <Route path="/" element={<Home />} />
-        <Route path="/signin" element={<Signin />} />
-        <Route path="/signup" element={<Signup />} />
+        <Route
+          path="/"
+          element={
+            <AuthGuard>
+              <Home />
+            </AuthGuard>
+          }
+        />
+        <Route
+          path="/signin"
+          element={
+            <GuestGuard>
+              <Signin />
+            </GuestGuard>
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <GuestGuard>
+              <Signup />
+            </GuestGuard>
+          }
+        />
       </RRDRoutes>
     </Suspense>
   );
