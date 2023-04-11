@@ -2,8 +2,6 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { FormProvider, RHFTextfield } from '@/components/hook-form';
-
 import {
   Button,
   Card,
@@ -13,18 +11,23 @@ import {
   Stack,
 } from '@chakra-ui/react';
 
-export default function SignupForm() {
-  const defaultValues = {
-    name: '',
-    username: '',
-    password: '',
-  };
+import { useAuth } from '@/auth/useAuth';
+import { FormProvider, RHFTextfield } from '@/components/hook-form';
 
-  const signupSchema = yup.object().shape({
-    name: yup.string().min(3).required('Name is required'),
-    username: yup.string().min(3).required('Username is required'),
-    password: yup.string().min(6).required('Password is required'),
-  });
+const defaultValues = {
+  name: '',
+  username: '',
+  password: '',
+};
+
+const signupSchema = yup.object().shape({
+  name: yup.string().min(3).required('Name is required'),
+  username: yup.string().min(3).required('Username is required'),
+  password: yup.string().min(6).required('Password is required'),
+});
+
+export default function SignupForm() {
+  const { signUp } = useAuth();
 
   const methods = useForm({
     defaultValues,
@@ -36,7 +39,11 @@ export default function SignupForm() {
     formState: { isSubmitting },
   } = methods;
 
-  const onSubmit = (data: typeof defaultValues) => {};
+  const onSubmit = async (data: typeof defaultValues) => {
+    const { name, username, password } = data;
+
+    signUp(name, username, password);
+  };
 
   return (
     <>

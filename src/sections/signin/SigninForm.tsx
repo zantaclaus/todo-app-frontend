@@ -2,8 +2,6 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { FormProvider, RHFTextfield } from '@/components/hook-form';
-
 import {
   Button,
   Card,
@@ -12,18 +10,22 @@ import {
   Heading,
   Stack,
 } from '@chakra-ui/react';
-import { useEffect } from 'react';
+
+import { useAuth } from '@/auth/useAuth';
+import { FormProvider, RHFTextfield } from '@/components/hook-form';
+
+const defaultValues = {
+  username: '',
+  password: '',
+};
+
+const signinSchema = yup.object().shape({
+  username: yup.string().min(3).required('Username is required'),
+  password: yup.string().min(6).required('Password is required'),
+});
 
 export default function SigninForm() {
-  const defaultValues = {
-    username: '',
-    password: '',
-  };
-
-  const signinSchema = yup.object().shape({
-    username: yup.string().min(3).required('Username is required'),
-    password: yup.string().min(6).required('Password is required'),
-  });
+  const { signIn } = useAuth();
 
   const methods = useForm({
     defaultValues,
@@ -32,14 +34,14 @@ export default function SigninForm() {
 
   const {
     handleSubmit,
-    formState: { isSubmitting, errors },
+    formState: { isSubmitting },
   } = methods;
 
-  useEffect(() => {
-    console.log({ errors });
-  }, [errors]);
+  const onSubmit = (data: typeof defaultValues) => {
+    const { username, password } = data;
 
-  const onSubmit = (data: typeof defaultValues) => {};
+    signIn(username, password);
+  };
 
   return (
     <>
