@@ -1,7 +1,6 @@
-import { useForm } from 'react-hook-form';
-
 import { Flex, HStack, Image } from '@chakra-ui/react';
-import SigninForm from '@/sections/Signin/SigninForm';
+
+import { SigninForm } from '@/sections/signin';
 
 export default function Signin() {
   return (
