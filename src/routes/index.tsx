@@ -1,5 +1,6 @@
 import AuthGuard from '@/auth/AuthGuard';
 import GuestGuard from '@/auth/GuestGuard';
+import { LoadingScreen } from '@/components/loading';
 import { lazy, Suspense } from 'react';
 import { Route, Routes as RRDRoutes } from 'react-router-dom';
 
@@ -9,7 +10,7 @@ const Signup = lazy(() => import('@/pages/Signup'));
 
 export default function Routes() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<LoadingScreen />}>
       <RRDRoutes>
         <Route
           path="/"
