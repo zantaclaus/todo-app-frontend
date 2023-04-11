@@ -50,6 +50,46 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 export default function AuthProvider({ children }: PropsWithChildren) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  const initialize = async () => {
+    const accessToken = localStorage.getItem('accessToken');
+
+    try {
+      if (accessToken) {
+        axios.defaults.headers.common['Authorization'] = `${accessToken}`;
+
+        const { data } = await axios.get('/api/user');
+
+        const { user } = data;
+
+        dispatch({
+          type: Types.INITIAL,
+          payload: {
+            isAuthenticated: true,
+            user,
+          },
+        });
+      } else {
+        dispatch({
+          type: Types.INITIAL,
+          payload: {
+            isAuthenticated: false,
+            user: null,
+          },
+        });
+      }
+    } catch (error) {
+      console.log(error);
+
+      dispatch({
+        type: Types.INITIAL,
+        payload: {
+          isAuthenticated: false,
+          user: null,
+        },
+      });
+    }
+  };
+
   const signIn = async (username: string, password: string) => {
     try {
       const res = await axios.post('/api/auth/signin', {
@@ -59,7 +99,8 @@ export default function AuthProvider({ children }: PropsWithChildren) {
 
       const { user, token } = res.data;
 
-      localStorage.setItem('token', `Bearer ${token}`);
+      localStorage.setItem('accessToken', `Bearer ${token}`);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
       dispatch({
         type: Types.SIGNIN,
@@ -82,7 +123,8 @@ export default function AuthProvider({ children }: PropsWithChildren) {
 
       const { user, token } = res.data;
 
-      localStorage.setItem('token', `Bearer ${token}`);
+      localStorage.setItem('accessToken', `Bearer ${token}`);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
       dispatch({
         type: Types.SIGNUP,
@@ -95,11 +137,15 @@ export default function AuthProvider({ children }: PropsWithChildren) {
     }
   };
 
+  const signOut = async () => {};
+
+  useEffect(() => {
+    initialize();
+  }, []);
+
   useEffect(() => {
     console.log(state);
   }, [state]);
-
-  const signOut = async () => {};
 
   return (
     <AuthContext.Provider value={{ ...state, signIn, signUp, signOut }}>
