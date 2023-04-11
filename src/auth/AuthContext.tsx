@@ -137,7 +137,13 @@ export default function AuthProvider({ children }: PropsWithChildren) {
     }
   };
 
-  const signOut = async () => {};
+  const signOut = async () => {
+    localStorage.removeItem('accessToken');
+    dispatch({
+      type: Types.LOGOUT,
+      payload: undefined,
+    });
+  };
 
   useEffect(() => {
     initialize();
