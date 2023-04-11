@@ -21,7 +21,7 @@ export default function SigninForm() {
 
   const {
     handleSubmit,
-    formState: { isSubmitting, isValid },
+    formState: { isSubmitting },
   } = methods;
 
   const onSubmit = (data: typeof defaultValues) => {};
@@ -46,7 +46,7 @@ export default function SigninForm() {
               mt={4}
               colorScheme="teal"
             >
-              Submit
+              Sign In
             </Button>
           </FormProvider>
         </CardBody>
