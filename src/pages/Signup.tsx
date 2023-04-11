@@ -1,4 +1,5 @@
-import SignupForm from '@/sections/signup/SignupForm';
+import { SignupForm } from '@/sections/signup';
+
 import { Flex, HStack, Image } from '@chakra-ui/react';
 
 export default function Signup() {
