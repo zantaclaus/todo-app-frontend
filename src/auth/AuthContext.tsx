@@ -143,10 +143,6 @@ export default function AuthProvider({ children }: PropsWithChildren) {
     initialize();
   }, []);
 
-  useEffect(() => {
-    console.log(state);
-  }, [state]);
-
   return (
     <AuthContext.Provider value={{ ...state, signIn, signUp, signOut }}>
       {children}
