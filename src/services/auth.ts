@@ -1,6 +1,6 @@
-import bcrypt from 'bcryptjs';
+import md5 from 'md5';
 
 export const hashPassword = async (password: string) => {
-  const hashed = await bcrypt.hash(password, 10);
+  const hashed = await md5(password);
   return hashed;
 };
