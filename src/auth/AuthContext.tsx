@@ -97,9 +97,10 @@ export default function AuthProvider({ children }: PropsWithChildren) {
 
   const signIn = async (username: string, password: string) => {
     try {
+      const hashedPassword = await hashPassword(password);
       const res = await axios.post('/api/auth/signin', {
         username,
-        password,
+        password: hashedPassword,
       });
 
       const { user, token } = res.data;
