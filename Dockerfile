@@ -3,11 +3,11 @@ FROM node:16-alpine AS builder
 WORKDIR /usr
 
 # For cache package.json and package-lock.json when package.json is not changed
-COPY ./package* ./
-RUN npm install
+COPY ./package* yarn.lock ./
+RUN yarn install
 
 COPY ./ ./
-RUN npm run build
+RUN yarn run build
 
 # nginx
 FROM nginx:1.23.2-alpine
