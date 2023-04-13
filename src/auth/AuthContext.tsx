@@ -132,7 +132,6 @@ export default function AuthProvider({ children }: PropsWithChildren) {
   const signUp = async (name: string, username: string, password: string) => {
     try {
       const hashedPassword = await hashPassword(password);
-      console.log(hashedPassword);
 
       const res = await axios.post('/api/auth/signup', {
         name,
